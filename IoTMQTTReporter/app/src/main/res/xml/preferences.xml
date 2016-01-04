@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:defaultValue="@string/devicenamedefault"
+        android:key="devicename"
+        android:summary="@string/devicename_label"
+        android:title="@string/devicename_title" />
+    <EditTextPreference
+        android:defaultValue="@string/reportfreqdefault"
+        android:key="reportfrequency"
+        android:numeric="integer"
+        android:summary="@string/report_cycle_label"
+        android:title="@string/report_cycle_title" />
+    <PreferenceCategory android:title="@string/incoming_header">
+        <EditTextPreference
+            android:defaultValue="@string/inbrokerdefault"
+            android:key="inbroker"
+            android:summary="@string/incomingbroker_label"
+            android:title="@string/incomingbroker_title" />
+        <EditTextPreference
+            android:defaultValue="@string/inclientdefault"
+            android:key="inclient"
+            android:summary="@string/incomingclient_label"
+            android:title="@string/incomingclient_title" />
+        <EditTextPreference
+            android:defaultValue="@string/inuserdefault"
+            android:key="inuser"
+            android:summary="@string/incominguser_label"
+            android:title="@string/incominguser_title" />
+        <EditTextPreference
+            android:defaultValue="@string/inpassdefault"
+            android:key="inpass"
+            android:summary="@string/incomingpass_label"
+            android:title="@string/incomingpass_title" />
+        <EditTextPreference
+            android:defaultValue="@string/intopicdefault"
+            android:key="intopic"
+            android:summary="@string/incomingtopic_label"
+            android:title="@string/incomingtopic_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/outgoing_header">
+        <EditTextPreference
+            android:defaultValue="@string/outbrokerdefault"
+            android:key="outbroker"
+            android:summary="@string/outgoingbroker_label"
+            android:title="@string/outgoingbroker_title" />
+        <EditTextPreference
+            android:defaultValue="@string/outclientdefault"
+            android:key="outclient"
+            android:summary="@string/outgoingclient_label"
+            android:title="@string/outgoingclient_title" />
+        <EditTextPreference
+            android:defaultValue="@string/outuserdefault"
+            android:key="outuser"
+            android:summary="@string/outgoinguser_label"
+            android:title="@string/outgoinguser_title" />
+        <EditTextPreference
+            android:defaultValue="@string/outpassdefault"
+            android:key="outpass"
+            android:summary="@string/outgoingpass_label"
+            android:title="@string/outgoingpass_title" />
+        <EditTextPreference
+            android:defaultValue="@string/outtopicdefault"
+            android:key="outtopic"
+            android:summary="@string/outgoingtopic_label"
+            android:title="@string/outgoingtopic_title" />
+    </PreferenceCategory>
+</PreferenceScreen>

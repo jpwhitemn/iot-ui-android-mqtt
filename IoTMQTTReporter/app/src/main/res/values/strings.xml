@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">Fuse IoT MQTT Reporter</string>
+
+    <!-- Menu options -->
+    <string name="action_settings">Settings</string>
+    <string name="action_start">Start Collecting Data</string>
+    <string name="action_stop">Stop Collecting Data</string>
+    <string name="action_listen">Start Command Listening</string>
+    <string name="action_mute">Stop Command Listening</string>
+
+    <!-- UI -->
+    <string name="name_label">Device:</string>
+    <string name="latest_label">Latest Readings</string>
+    <string name="batt_label">Battery</string>
+    <string name="batt_level_label">Level(%):</string>
+    <string name="batt_health_label">Heath:</string>
+    <string name="bat_temp_label">Temp (Celsius):</string>
+    <string name="batt_volt_label">Voltage:</string>
+
+    <string name="light_label">Light</string>
+    <string name="light_level_label">Level (lux):</string>
+
+    <string name="direction_label">Orientation</string>
+    <string name="degree_label">Direction (degrees):</string>
+
+    <string name="geo_label">Geolocation</string>
+    <string name="lat_label">Latitude:</string>
+    <string name="long_label">Longitude:</string>
+    <string name="alt_label">Altitude(ft):</string>
+    <string name="speed_label">Speed(miles/hr):</string>
+
+    <!-- preference strings -->
+    <string name="devicename_label">Your device name:</string>
+    <string name="devicename_title">Device name</string>
+    <string name="incomingbroker_label">Incoming message broker</string>
+    <string name="incomingbroker_title">Incoming broker</string>
+    <string name="incomingclient_label">Incoming message client id</string>
+    <string name="incomingclient_title">Incoming client</string>
+    <string name="incominguser_label">Incoming message client user</string>
+    <string name="incominguser_title">Incoming user</string>
+    <string name="incomingpass_label">Incoming message client password</string>
+    <string name="incomingpass_title">Incoming password</string>
+    <string name="incomingtopic_label">Incoming message topic</string>
+    <string name="incomingtopic_title">Incoming topic</string>
+    <string name="outgoingbroker_label">Outgoing message broker</string>
+    <string name="outgoingbroker_title">Outgoing broker</string>
+    <string name="outgoingclient_label">Outgoing message client id</string>
+    <string name="outgoingclient_title">Outgoing client</string>
+    <string name="outgoinguser_label">Outgoing message client user</string>
+    <string name="outgoinguser_title">Outgoing user</string>
+    <string name="outgoingpass_label">Outgoing message client password</string>
+    <string name="outgoingpass_title">Outgoing password</string>
+    <string name="outgoingtopic_label">Outgoing message topic</string>
+    <string name="outgoingtopic_title">Outgoing topic</string>
+    <string name="report_cycle_label">Report frequency (in milliseconds)</string>
+    <string name="report_cycle_title">Report time</string>
+    <string name="incoming_header">Incoming Messages</string>
+    <string name="outgoing_header">Outgoing Messages</string>
+    <string name="title_activity_msg_preferences">Preferences</string>
+</resources>

@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.dell.iotmqttreporter.MainActivity">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_start"
+        android:orderInCategory="200"
+        android:title="@string/action_start"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_stop"
+        android:orderInCategory="300"
+        android:title="@string/action_stop"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_listen"
+        android:orderInCategory="400"
+        android:title="@string/action_listen"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_mute"
+        android:orderInCategory="500"
+        android:title="@string/action_mute"
+        app:showAsAction="never" />
+</menu>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devicenamedefault">my device</string>
+    <string name="reportfreqdefault">60000</string>
+    <string name="outbrokerdefault">tcp://m11.cloudmqtt.com:14377</string>
+    <string name="outclientdefault">DeviceServiceSubscriber</string>
+    <string name="outuserdefault">widotgkt</string>
+    <string name="outpassdefault">wQsQuyK7p-Qe</string>
+    <string name="outtopicdefault">InboundDS</string>
+    <string name="inbrokerdefault">tcp://m11.cloudmqtt.com:14377</string>
+    <string name="inclientdefault">DeviceServicePublisher</string>
+    <string name="inuserdefault">widotgkt</string>
+    <string name="inpassdefault">wQsQuyK7p-Qe</string>
+    <string name="intopicdefault">AndroidDeviceInbound</string>
+</resources>
