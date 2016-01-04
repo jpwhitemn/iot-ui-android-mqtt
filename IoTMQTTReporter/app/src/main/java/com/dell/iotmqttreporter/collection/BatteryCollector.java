@@ -54,6 +54,24 @@ public class BatteryCollector extends BroadcastReceiver {
         sendMessage(context, batteryUpdateMap);
     }
 
+    public int getLast_health() {
+        HashMap<ReportLevel, String> batteryUpdateMap = new HashMap<>();
+        batteryUpdateMap.put(ReportLevel.batteryhealth, Integer.toString(health));
+        return last_health;
+    }
+
+    public int getLast_level() {
+        return last_level;
+    }
+
+    public int getLast_temperature() {
+        return last_temperature;
+    }
+
+    public int getLast_voltage() {
+        return last_voltage;
+    }
+
     private void sendMessage(Context ctx, HashMap<ReportLevel, String> batteryUpdateMap){
         Intent updateIntent = new Intent();
         updateIntent.setAction("com.dell.iot.android.update");

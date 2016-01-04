@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.dell.iotmqttreporter.R;
 import com.dell.iotmqttreporter.collection.ReportLevel;
 import com.google.gson.Gson;
 
@@ -86,6 +87,7 @@ public class UpdateSendor extends BroadcastReceiver {
     }
 
     private void getSharedPreferences(Context ctx) {
+        PreferenceManager.setDefaultValues(ctx, R.xml.preferences, false);
         prefs = PreferenceManager.getDefaultSharedPreferences((ctx));
     }
 }

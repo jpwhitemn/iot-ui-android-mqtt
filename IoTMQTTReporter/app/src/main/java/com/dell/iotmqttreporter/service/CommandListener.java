@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.dell.iotmqttreporter.R;
+
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -59,6 +61,7 @@ public class CommandListener implements MqttCallback {
     }
 
     private void getSharedPreferences(Context ctx) {
+        PreferenceManager.setDefaultValues(ctx, R.xml.preferences, false);
         prefs = PreferenceManager.getDefaultSharedPreferences((ctx));
     }
 
