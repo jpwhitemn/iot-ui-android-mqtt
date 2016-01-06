@@ -38,7 +38,7 @@ public class CommandListener implements MqttCallback {
 
     public CommandListener(Context ctx) {
         this.ctx = ctx;
-        processor = new CommandProcessor();
+        processor = new CommandProcessor(ctx);
         if (prefs == null) {
             getSharedPreferences(ctx);
         }

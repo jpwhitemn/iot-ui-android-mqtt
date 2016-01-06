@@ -31,16 +31,19 @@
             android:name=".service.CollectionService"
             android:enabled="true"
             android:exported="false" />
-
-        <receiver
-            android:name=".service.UpdateSendor"
-            android:enabled="true"
-            android:exported="false" />
-
         <service
             android:name=".service.CommandService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <receiver
+            android:name=".service.CollectionUpdateSendor"
+            android:enabled="true"
+            android:exported="false" />
+        <receiver
+            android:name=".service.CommandResponseSendor"
+            android:enabled="true"
+            android:exported="true"></receiver>
     </application>
 
 </manifest>

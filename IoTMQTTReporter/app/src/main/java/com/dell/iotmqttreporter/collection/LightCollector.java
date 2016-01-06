@@ -27,13 +27,13 @@ public class LightCollector implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        HashMap<ReportLevel, String> lightUpdateMap = new HashMap<>();
+        HashMap<ReportKey, String> lightUpdateMap = new HashMap<>();
         float lightLevel = event.values[0];
         if (Math.abs(lightLevel - lastLightLevel) > CHG_LIGHT_LEVEL) {
             Log.d(TAG, "Significant light level change detected:  " + lightLevel);
-            lightUpdateMap.put(ReportLevel.lightlevel, Float.toString(lightLevel));
+            lightUpdateMap.put(ReportKey.lightlevel, Float.toString(lightLevel));
             lastLightLevel = lightLevel;
-
+            LastCollected.put(ReportKey.lightlevel, lastLightLevel);
             sendMessage(lightUpdateMap);
         }
     }
@@ -42,7 +42,7 @@ public class LightCollector implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
-    private void sendMessage(HashMap<ReportLevel, String> lightUpdateMap) {
+    private void sendMessage(HashMap<ReportKey, String> lightUpdateMap) {
         Intent updateIntent = new Intent();
         updateIntent.setAction("com.dell.iot.android.update");
         updateIntent.putExtra("updates", lightUpdateMap);

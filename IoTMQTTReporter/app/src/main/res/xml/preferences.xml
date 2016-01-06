@@ -65,4 +65,32 @@
             android:summary="@string/outgoingtopic_label"
             android:title="@string/outgoingtopic_title" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/cmdresp_header">
+        <EditTextPreference
+            android:defaultValue="@string/respbrokerdefault"
+            android:key="respbroker"
+            android:summary="@string/cmdrespbroker_label"
+            android:title="@string/cmdrespbroker_title" />
+        <EditTextPreference
+            android:defaultValue="@string/respclientdefault"
+            android:key="respclient"
+            android:summary="@string/cmdrespclient_label"
+            android:title="@string/cmdrespclient_title" />
+        <EditTextPreference
+            android:defaultValue="@string/respuserdefault"
+            android:key="respuser"
+            android:summary="@string/cmdrespuser_label"
+            android:title="@string/cmdrespuser_title" />
+        <EditTextPreference
+            android:defaultValue="@string/resppassdefault"
+            android:key="resppass"
+            android:summary="@string/cmdresppass_label"
+            android:title="@string/cmdresppass_title" />
+        <EditTextPreference
+            android:defaultValue="@string/resptopicdefault"
+            android:key="resptopic"
+            android:summary="@string/cmdresptopic_label"
+            android:title="@string/cmdresptopic_title" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

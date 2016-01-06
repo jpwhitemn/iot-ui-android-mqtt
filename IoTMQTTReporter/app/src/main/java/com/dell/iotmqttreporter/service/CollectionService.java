@@ -28,13 +28,12 @@ public class CollectionService extends Service {
     private OrientationCollector orientationCollector;
     private LightCollector lightCollector;
     private BatteryCollector batteryCollector;
-
-    private UpdateSendor sendor;
+    private CollectionUpdateSendor sendor;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        sendor = new UpdateSendor();
+        sendor = new CollectionUpdateSendor();
         LocalBroadcastManager.getInstance(this).registerReceiver(sendor,
                 new IntentFilter("com.dell.iot.android.update"));
     }

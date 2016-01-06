@@ -2,7 +2,6 @@ package com.dell.iotmqttreporter;
 
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -16,9 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.dell.iotmqttreporter.collection.ReportLevel;
+import com.dell.iotmqttreporter.collection.ReportKey;
 import com.dell.iotmqttreporter.service.CollectionService;
-import com.dell.iotmqttreporter.service.CommandListener;
 import com.dell.iotmqttreporter.service.CommandService;
 
 import java.util.HashMap;
@@ -122,38 +120,38 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         deviceNameTV.setText(deviceName);
     }
 
-    public void updateLevels(Map<ReportLevel, String> levels) {
-        for (ReportLevel level : levels.keySet()) {
+    public void updateLevels(Map<ReportKey, String> levels) {
+        for (ReportKey level : levels.keySet()) {
             switch (level) {
                 case batterylevel:
-                    batteryLevelTV.setText(levels.get(ReportLevel.batterylevel));
+                    batteryLevelTV.setText(levels.get(ReportKey.batterylevel));
                     break;
                 case batteryhealth:
-                    batteryHealthTV.setText(levels.get(ReportLevel.batteryhealth));
+                    batteryHealthTV.setText(levels.get(ReportKey.batteryhealth));
                     break;
                 case batterytemperature:
-                    batteryTempTV.setText(levels.get(ReportLevel.batterytemperature));
+                    batteryTempTV.setText(levels.get(ReportKey.batterytemperature));
                     break;
                 case batteryvoltage:
-                    batteryVoltTV.setText(levels.get(ReportLevel.batteryvoltage));
+                    batteryVoltTV.setText(levels.get(ReportKey.batteryvoltage));
                     break;
                 case altitude:
-                    altTV.setText(levels.get(ReportLevel.altitude));
+                    altTV.setText(levels.get(ReportKey.altitude));
                     break;
                 case latitude:
-                    latTV.setText(levels.get(ReportLevel.latitude));
+                    latTV.setText(levels.get(ReportKey.latitude));
                     break;
                 case longitude:
-                    longTV.setText(levels.get(ReportLevel.longitude));
+                    longTV.setText(levels.get(ReportKey.longitude));
                     break;
                 case speed:
-                    speedTV.setText(levels.get(ReportLevel.speed));
+                    speedTV.setText(levels.get(ReportKey.speed));
                     break;
                 case direction:
-                    orientationTV.setText(levels.get(ReportLevel.direction));
+                    orientationTV.setText(levels.get(ReportKey.direction));
                     break;
                 case lightlevel:
-                    lightLevelTV.setText(levels.get(ReportLevel.lightlevel));
+                    lightLevelTV.setText(levels.get(ReportKey.lightlevel));
                     break;
             }
         }
@@ -193,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private BroadcastReceiver updateMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            HashMap<ReportLevel, String> updateMap = (HashMap) intent.getSerializableExtra("updates");
+            HashMap<ReportKey, String> updateMap = (HashMap) intent.getSerializableExtra("updates");
             if (updateMap.size() > 0)
                 updateLevels(updateMap);
         }

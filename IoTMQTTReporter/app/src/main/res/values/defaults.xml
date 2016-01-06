@@ -12,4 +12,9 @@
     <string name="inuserdefault">widotgkt</string>
     <string name="inpassdefault">wQsQuyK7p-Qe</string>
     <string name="intopicdefault">AndroidDSTopic</string>
+    <string name="respbrokerdefault">tcp://m11.cloudmqtt.com:14377</string>
+    <string name="respclientdefault">CmdRespPublisher</string>
+    <string name="respuserdefault">widotgkt</string>
+    <string name="resppassdefault">wQsQuyK7p-Qe</string>
+    <string name="resptopicdefault">CmdRespTopic</string>
 </resources>

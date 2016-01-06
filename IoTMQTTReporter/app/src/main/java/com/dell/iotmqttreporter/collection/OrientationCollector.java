@@ -30,7 +30,7 @@ public class OrientationCollector implements SensorEventListener {
     }
 
     public void onSensorChanged(SensorEvent event) {
-        HashMap<ReportLevel, String> orientUpdateMap = new HashMap<>();
+        HashMap<ReportKey, String> orientUpdateMap = new HashMap<>();
 
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
             mGravity = event.values;
@@ -50,10 +50,11 @@ public class OrientationCollector implements SensorEventListener {
                 int direction = Math.round(orientation[0] * 360 / (2 * 3.14159f));
                 if (Math.abs(direction - lastDirection) > CHG_DIR_DIFF) {
                     Log.d(TAG, "Significant change in direction detected:  " + direction);
-                    orientUpdateMap.put(ReportLevel.direction, Integer.toString(direction));
+                    orientUpdateMap.put(ReportKey.direction, Integer.toString(direction));
                     lastDirection = direction;
+                    LastCollected.put(ReportKey.direction, lastDirection);
+                    sendMessage(orientUpdateMap);
                 }
-                sendMessage(orientUpdateMap);
             }
         }
     }
@@ -62,7 +63,7 @@ public class OrientationCollector implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
-    private void sendMessage(HashMap<ReportLevel, String> lightUpdateMap) {
+    private void sendMessage(HashMap<ReportKey, String> lightUpdateMap) {
         Intent updateIntent = new Intent();
         updateIntent.setAction("com.dell.iot.android.update");
         updateIntent.putExtra("updates", lightUpdateMap);

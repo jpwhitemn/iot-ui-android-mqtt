@@ -42,6 +42,7 @@
     <string name="incomingpass_title">Incoming password</string>
     <string name="incomingtopic_label">Incoming message topic</string>
     <string name="incomingtopic_title">Incoming topic</string>
+
     <string name="outgoingbroker_label">Outgoing message broker</string>
     <string name="outgoingbroker_title">Outgoing broker</string>
     <string name="outgoingclient_label">Outgoing message client id</string>
@@ -52,9 +53,22 @@
     <string name="outgoingpass_title">Outgoing password</string>
     <string name="outgoingtopic_label">Outgoing message topic</string>
     <string name="outgoingtopic_title">Outgoing topic</string>
+
+    <string name="cmdrespbroker_label">Command response message broker</string>
+    <string name="cmdrespbroker_title">Command response broker</string>
+    <string name="cmdrespclient_label">Command response message client id</string>
+    <string name="cmdrespclient_title">Command response client</string>
+    <string name="cmdrespuser_label">Command response message client user</string>
+    <string name="cmdrespuser_title">Command response user</string>
+    <string name="cmdresppass_label">Command response message client password</string>
+    <string name="cmdresppass_title">Command response password</string>
+    <string name="cmdresptopic_label">Command response message topic</string>
+    <string name="cmdresptopic_title">Command response topic</string>
+
     <string name="report_cycle_label">Report frequency (in milliseconds)</string>
     <string name="report_cycle_title">Report time</string>
     <string name="incoming_header">Incoming Messages</string>
     <string name="outgoing_header">Outgoing Messages</string>
+    <string name="cmdresp_header">Command Response Messages</string>
     <string name="title_activity_msg_preferences">Preferences</string>
 </resources>

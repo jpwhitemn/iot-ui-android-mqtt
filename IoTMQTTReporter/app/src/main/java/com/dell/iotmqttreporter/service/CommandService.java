@@ -2,16 +2,26 @@ package com.dell.iotmqttreporter.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 public class CommandService extends Service {
 
     private static final String TAG = "CommandService";
+    private static final String CMD_RESP_ACTION = "com.dell.iot.android.commandresponse";
+
 
     private CommandListener listener;
+    private CommandResponseSendor sendor;
 
-    public CommandService() {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        sendor = new CommandResponseSendor();
+        LocalBroadcastManager.getInstance(this).registerReceiver(sendor,
+                new IntentFilter(CMD_RESP_ACTION));
     }
 
     @Override
@@ -23,6 +33,7 @@ public class CommandService extends Service {
     public void onDestroy() {
         super.onDestroy();
         listener.cleanup();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(sendor);
         Log.d(TAG, "Stopped the command service.");
     }
 

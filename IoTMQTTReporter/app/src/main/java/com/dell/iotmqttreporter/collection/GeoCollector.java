@@ -9,6 +9,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class GeoCollector implements LocationListener {
 
@@ -45,47 +46,57 @@ public class GeoCollector implements LocationListener {
     @Override
     public void onLocationChanged(Location newLocation) {
         if (isBetterLocation(newLocation, lastLocation)) {
-
-            HashMap<ReportLevel, String> geoUpdateMap = new HashMap<>();
-
-            if ((Math.abs(newLocation.getLatitude() - lastLat) > COORD_CHG_DIFF) ||
-                    (Math.abs(newLocation.getLongitude() - lastLong) > COORD_CHG_DIFF)) {
-                Log.d(TAG, "Significant change in location detected: " + newLocation.getLatitude() + " " + newLocation.getLongitude());
-                geoUpdateMap.put(ReportLevel.latitude, Double.toString(newLocation.getLatitude()));
-                geoUpdateMap.put(ReportLevel.longitude, Double.toString(newLocation.getLongitude()));
-                lastLat = newLocation.getLatitude();
-                lastLong = newLocation.getLongitude();
-            }
-
-            double altitude;
-            if (newLocation.hasAltitude()) {
-                altitude = newLocation.getAltitude();
-                if (uom.equals(LocationUoM.English)) {
-                    altitude = altitude * METER_TO_FEET;
-                }
-                altitude = smootheCurve(altitude);
-                if (Math.abs(altitude - lastAltitude) > ALT_CHG_DIFF) {
-                    Log.d(TAG, "Significant altitude change detected:  " + altitude);
-                    geoUpdateMap.put(ReportLevel.altitude, Double.toString(altitude));
-                    lastAltitude = altitude;
-                }
-            }
-            float myspeed;
-            if (newLocation.hasSpeed()) {
-                myspeed = newLocation.getSpeed();
-                if (uom.equals(LocationUoM.English)) {
-                    myspeed = myspeed * METER_TO_MILE;
-                } else {
-                    myspeed = myspeed * METER_TO_KM;
-                }
-                if (Math.abs(myspeed - lastSpeed) > SPD_CHG_DIFF) {
-                    Log.d(TAG, "Significant speed change detected:  " + myspeed);
-                    geoUpdateMap.put(ReportLevel.speed, Double.toString(myspeed));
-                    lastSpeed = myspeed;
-                }
-            }
+            HashMap<ReportKey, String> geoUpdateMap = new HashMap<>();
+            updateLatLong(newLocation, geoUpdateMap);
+            updateAltitude(newLocation, geoUpdateMap);
+            updateSpeed(newLocation, geoUpdateMap);
             sendMessage(geoUpdateMap);
             lastLocation = newLocation;
+        }
+    }
+
+    private void updateLatLong(Location newLocation, Map<ReportKey, String> geoUpdateMap) {
+        if ((Math.abs(newLocation.getLatitude() - lastLat) > COORD_CHG_DIFF) ||
+                (Math.abs(newLocation.getLongitude() - lastLong) > COORD_CHG_DIFF)) {
+            Log.d(TAG, "Significant change in location detected: " + newLocation.getLatitude() + " " + newLocation.getLongitude());
+            geoUpdateMap.put(ReportKey.latitude, Double.toString(newLocation.getLatitude()));
+            geoUpdateMap.put(ReportKey.longitude, Double.toString(newLocation.getLongitude()));
+            lastLat = newLocation.getLatitude();
+            lastLong = newLocation.getLongitude();
+            LastCollected.put(ReportKey.latitude, lastLat);
+            LastCollected.put(ReportKey.longitude, lastLong);
+        }
+    }
+
+    private void updateAltitude(Location newLocation, Map<ReportKey, String> geoUpdateMap) {
+        if (newLocation.hasAltitude()) {
+            double altitude = newLocation.getAltitude();
+            if (uom.equals(LocationUoM.English)) {
+                altitude = altitude * METER_TO_FEET;
+            }
+            altitude = smootheCurve(altitude);
+            if (Math.abs(altitude - lastAltitude) > ALT_CHG_DIFF) {
+                Log.d(TAG, "Significant altitude change detected:  " + altitude);
+                geoUpdateMap.put(ReportKey.altitude, Double.toString(altitude));
+                lastAltitude = altitude;
+                LastCollected.put(ReportKey.altitude, lastAltitude);
+            }
+        }
+    }
+
+    private void updateSpeed(Location newLocation, Map<ReportKey, String> geoUpdateMap) {
+        if (newLocation.hasSpeed()) {
+            float myspeed = newLocation.getSpeed();
+            if (uom.equals(LocationUoM.English)) {
+                myspeed = myspeed * METER_TO_MILE;
+            } else {
+                myspeed = myspeed * METER_TO_KM;
+            }
+            if (Math.abs(myspeed - lastSpeed) > SPD_CHG_DIFF) {
+                Log.d(TAG, "Significant speed change detected:  " + myspeed);
+                geoUpdateMap.put(ReportKey.speed, Double.toString(myspeed));
+                lastSpeed = myspeed;
+            }
         }
     }
 
@@ -173,7 +184,7 @@ public class GeoCollector implements LocationListener {
         return sum / cnt;
     }
 
-    private void sendMessage(HashMap<ReportLevel, String> geoUpdateMap) {
+    private void sendMessage(HashMap<ReportKey, String> geoUpdateMap) {
         Intent updateIntent = new Intent();
         updateIntent.setAction("com.dell.iot.android.update");
         updateIntent.putExtra("updates", geoUpdateMap);
