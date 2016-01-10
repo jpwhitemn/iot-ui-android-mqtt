@@ -17,7 +17,9 @@ public class CommandProcessor {
     private static final String TAG = "CommandProcessor";
     private static final String CMD_KEY = "cmd";
     private static final String METHOD_KEY = "method";
+    private static final String UUID_KEY= "uuid";
     private static final String CMD_REQUEST_KEY = "get";
+    private static final String CMD_RESP_UUID_KEY = "uuid";
     private static final String CMD_RESP_ACTION = "com.dell.iot.android.commandresponse";
 
     private Context ctx;
@@ -33,9 +35,10 @@ public class CommandProcessor {
             String json = new String(payload);
             JsonObject jsonObject = parser.parse(json).getAsJsonObject();
             String method = getMethod(jsonObject);
+            String uuid = getUUID(jsonObject);
             ReportKey key = ReportKey.valueOf(getCmd(jsonObject));
-            Log.d(TAG, "Processing " + method + " command:  " + key.toString());
-            sendMessage(key);
+            Log.d(TAG, "Processing " + method + " command:  " + key.toString() + ", uuid: " + uuid);
+            sendMessage(key, uuid);
         } catch (Exception e) {
             Log.e(TAG, "Error processing command request:  " + new String(payload));
             e.printStackTrace();
@@ -58,10 +61,19 @@ public class CommandProcessor {
             return null;
     }
 
-    private void sendMessage(ReportKey requestedKey) {
+    private String getUUID(JsonObject jsonObject) {
+        JsonElement element = jsonObject.get(UUID_KEY);
+        if (element != null)
+            return element.getAsString();
+        else
+            return null;
+    }
+
+    private void sendMessage(ReportKey requestedKey, String uuid) {
         Intent updateIntent = new Intent();
         updateIntent.setAction(CMD_RESP_ACTION);
         updateIntent.putExtra(CMD_REQUEST_KEY, requestedKey.toString());
+        updateIntent.putExtra(CMD_RESP_UUID_KEY, uuid);
         LocalBroadcastManager.getInstance(ctx).sendBroadcast(updateIntent);
     }
 }

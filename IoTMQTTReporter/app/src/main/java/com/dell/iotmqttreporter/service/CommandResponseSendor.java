@@ -33,6 +33,7 @@ public class CommandResponseSendor extends BroadcastReceiver {
     private static final int KEEP_ALIVE = 30;
 
     private static final String CMD_REQUEST_KEY = "get";
+    private static final String CMD_REQUEST_UUID_KEY = "uuid";
 
     private static final String TAG = "CommandResponseSendor";
     private static final Gson gson = new Gson();
@@ -53,9 +54,11 @@ public class CommandResponseSendor extends BroadcastReceiver {
             if (client != null) {
                 try {
                     ReportKey key = ReportKey.valueOf(intent.getStringExtra(CMD_REQUEST_KEY));
+                    String uuid = intent.getStringExtra(CMD_REQUEST_UUID_KEY);
                     Object data = LastCollected.get(key);
                     HashMap<ReportKey, String> response = new HashMap<>();
                     response.put(key, data.toString());
+                    response.put(ReportKey.uuid, uuid);
                     response.put(ReportKey.name, prefs.getString("devicename", null));
                     sendMessage(gson.toJson(response));
                 } catch (Exception e) {
