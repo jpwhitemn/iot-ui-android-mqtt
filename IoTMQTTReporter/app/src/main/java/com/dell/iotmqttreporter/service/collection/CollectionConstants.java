@@ -25,7 +25,8 @@ public class CollectionConstants {
     public static final String OUTPASS_KEY = "outpass";
     public static final String OUTTOPIC_KEY = "outtopic";
     public static final int QOS = 0;
-    public static final int KEEP_ALIVE = 30;
+    // MQTT keep alive set to 1 hour
+    public static final int KEEP_ALIVE = 3600;
 
     // key to the update data stored in the Intent triggering the message send
     public static final String INTENT_UPD_KEY = "updates";

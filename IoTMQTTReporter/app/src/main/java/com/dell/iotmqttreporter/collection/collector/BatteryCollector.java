@@ -1,5 +1,5 @@
 /*******************************************************************************
- * © Copyright 2016, Dell, Inc.  All Rights Reserved.
+ * Copyright 2016, Dell, Inc.  All Rights Reserved.
  ******************************************************************************/
 package com.dell.iotmqttreporter.collection.collector;
 

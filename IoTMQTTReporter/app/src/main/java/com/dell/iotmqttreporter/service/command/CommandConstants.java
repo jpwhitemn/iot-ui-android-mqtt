@@ -55,8 +55,8 @@ public class CommandConstants {
 
     // key to MQTT response QOS
     public static final int QOS = 0;
-    // key to MQTT response Keep Allive value
-    public static final int KEEP_ALIVE = 30;
+    // key to MQTT response Keep Allive value (set to 1 hour)
+    public static final int KEEP_ALIVE = 3600;
 
 
     // preferences key to the device name
