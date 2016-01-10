@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+/*******************************************************************************
+ * © Copyright 2016, Dell, Inc.  All Rights Reserved.
+ ******************************************************************************/
+-->
 <resources>
     <string name="devicenamedefault">devicex</string>
     <string name="reportfreqdefault">60000</string>

@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">Fuse IoT MQTT Reporter</string>
+    <!--
+/*******************************************************************************
+ * © Copyright 2016, Dell, Inc.  All Rights Reserved.
+ ******************************************************************************/
+-->
+    <string name="app_name">Fuse IoT Reporter</string>
 
     <!-- Menu options -->
     <string name="action_settings">Settings</string>

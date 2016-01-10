@@ -1,4 +1,9 @@
-package com.dell.iotmqttreporter.service;
+/*******************************************************************************
+ * © Copyright 2016, Dell, Inc.  All Rights Reserved.
+ ******************************************************************************/
+package com.dell.iotmqttreporter.service.collection;
+
+import static com.dell.iotmqttreporter.service.collection.CollectionConstants.*;
 
 import android.app.Service;
 import android.content.Context;
@@ -12,30 +17,39 @@ import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.dell.iotmqttreporter.collection.BatteryCollector;
-import com.dell.iotmqttreporter.collection.GeoCollector;
-import com.dell.iotmqttreporter.collection.LightCollector;
-import com.dell.iotmqttreporter.collection.OrientationCollector;
+import com.dell.iotmqttreporter.collection.collector.BatteryCollector;
+import com.dell.iotmqttreporter.collection.collector.GeoCollector;
+import com.dell.iotmqttreporter.collection.collector.LightCollector;
+import com.dell.iotmqttreporter.collection.collector.OrientationCollector;
 
+/**
+ * Created by Jim on 1/10/2016.
+ * <p/>
+ * Service responsible for kicking off device data collection - more precisely for kicking of the various broadcast receivers and listeners (the collectors) that capture the device data.
+ * Also starts the CollectionUpdateSendor (a broadcast receiver) to snag new data collection intents and send out the collected data from the collector listeners/broadcasters.
+ * Responsible for shutdown and cleanup of the collectors and the sendor broadcast receiver when the service is stopped.
+ */
 public class CollectionService extends Service {
 
     private static final String TAG = "CollectionService";
-    private static final int LOCATION_INTERVAL = 1000; // in milliseconds
-    private static final int MIN_DISTANCE = 10; // in meters
-    private static final String FINE_LOC_PERMISSION = "android.permission.ACCESS_FINE_LOCATION";
 
+    // the "collector" listeners and broadcast receivers
     private GeoCollector geoCollector;
     private OrientationCollector orientationCollector;
     private LightCollector lightCollector;
     private BatteryCollector batteryCollector;
+    // the data sending broadcast receiver
     private CollectionUpdateSendor sendor;
 
+    /**
+     * Create the broadcast receiver that sends new MQTT messages on collected data
+     */
     @Override
     public void onCreate() {
         super.onCreate();
         sendor = new CollectionUpdateSendor();
         LocalBroadcastManager.getInstance(this).registerReceiver(sendor,
-                new IntentFilter("com.dell.iot.android.update"));
+                new IntentFilter(UPDATE_COLLECTION_ACTION));
     }
 
     @Override

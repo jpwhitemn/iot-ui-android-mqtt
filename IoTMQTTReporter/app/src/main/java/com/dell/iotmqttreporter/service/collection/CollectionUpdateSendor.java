@@ -1,4 +1,9 @@
-package com.dell.iotmqttreporter.service;
+/*******************************************************************************
+ * © Copyright 2016, Dell, Inc.  All Rights Reserved.
+ ******************************************************************************/
+package com.dell.iotmqttreporter.service.collection;
+
+import static com.dell.iotmqttreporter.service.collection.CollectionConstants.*;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,17 +25,15 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.util.HashMap;
 
+/**
+ * Created by Jim on 1/10/2016.
+ *
+ * Responsible for sending device collected data to the MQTT device service.
+ * As a broadcast receiver, it is triggered by intent from each of the collectors/collection listeners
+ */
 public class CollectionUpdateSendor extends BroadcastReceiver {
 
     // TODO - abstract out commonalities between CollectionUpdateSendor and CommandResponseSendor
-
-    private static final String OUTBROKER_KEY = "outbroker";
-    private static final String OUTCLIENTID_KEY = "outclient";
-    private static final String OUTUSER_KEY = "outuser";
-    private static final String OUTPASS_KEY = "outpass";
-    private static final String OUTTOPIC_KEY = "outtopic";
-    private static final int QOS = 0;
-    private static final int KEEP_ALIVE = 30;
 
     private static final String TAG = "CollectionUpdateSendor";
     private static final Gson gson = new Gson();
@@ -41,7 +44,6 @@ public class CollectionUpdateSendor extends BroadcastReceiver {
 
     private SharedPreferences prefs;
 
-
     @Override
     public void onReceive(Context context, Intent intent) {
         if (prefs == null)
@@ -50,16 +52,21 @@ public class CollectionUpdateSendor extends BroadcastReceiver {
             if (client == null)
                 getClient();
             if (client != null) {
-                HashMap updateMap = (HashMap) intent.getSerializableExtra("updates");
+                // get the map containing the collected data by the device.
+                HashMap updateMap = (HashMap) intent.getSerializableExtra(INTENT_UPD_KEY);
                 if (updateMap.size() > 0) {
-                    updateMap.put(ReportKey.name, prefs.getString("devicename", null));
+                    // add the device name to the data to be sent
+                    updateMap.put(ReportKey.name, prefs.getString(PREF_DEVICE_NAME, null));
                     sendMessage(gson.toJson(updateMap));
                 }
-            }
-        }
+            } else
+                Log.e(TAG, "No MQTT client available to send collection updates.");
+        } else
+            Log.e(TAG, "No preferences available to establish MQTT connection to send collection updates.");
     }
 
     private void getClient() {
+        // TODO - extract client and options work to another class; combine with the CommandResponseSendor and CommandListner that need the same
         try {
             client = new MqttClient(prefs.getString(OUTBROKER_KEY, null), prefs.getString(OUTCLIENTID_KEY, null), new MemoryPersistence());
         } catch (MqttException e) {

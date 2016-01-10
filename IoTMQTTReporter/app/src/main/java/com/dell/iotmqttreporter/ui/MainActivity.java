@@ -1,4 +1,7 @@
-package com.dell.iotmqttreporter;
+/*******************************************************************************
+ * © Copyright 2016, Dell, Inc.  All Rights Reserved.
+ ******************************************************************************/
+package com.dell.iotmqttreporter.ui;
 
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
@@ -15,13 +18,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.dell.iotmqttreporter.R;
 import com.dell.iotmqttreporter.collection.ReportKey;
-import com.dell.iotmqttreporter.service.CollectionService;
-import com.dell.iotmqttreporter.service.CommandService;
+import com.dell.iotmqttreporter.service.collection.CollectionConstants;
+import com.dell.iotmqttreporter.service.collection.CollectionService;
+import com.dell.iotmqttreporter.service.command.CommandConstants;
+import com.dell.iotmqttreporter.service.command.CommandService;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Created by Jim on 1/10/2016.
+ * <p/>
+ * Main activity (and only besides the preferences activity) to display the data collected by the device and to be sent to the MQTT Device Service via MQTT message.
+ */
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private TextView deviceNameTV, batteryHealthTV, batteryLevelTV, batteryTempTV, batteryVoltTV, latTV, longTV, altTV, speedTV, lightLevelTV, orientationTV;
@@ -54,9 +65,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     public void onResume() {
         super.onResume();
-        // Register to receive local broadcast messages.
+        // Register this activity to receive collection updates by collector - this is for display only and not sending which is done by the Collection Service/Collection Update Sendor
         LocalBroadcastManager.getInstance(this).registerReceiver(updateMessageReceiver,
-                new IntentFilter("com.dell.iot.android.update"));
+                new IntentFilter(CollectionConstants.UPDATE_COLLECTION_ACTION));
+        startListeningServices();
         //TODO - restore latest readings
     }
 
@@ -68,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     @Override
     protected void onPause() {
-        // Unregister since the activity is not visible
+        // Unregister the local broadcast receiver of collection updates since the activity is not visible
         LocalBroadcastManager.getInstance(this).unregisterReceiver(updateMessageReceiver);
         // TODO - store latest readings
         super.onPause();
@@ -93,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         return super.onOptionsItemSelected(item);
     }
 
+    // based on whether the services (Collection and command response) are running, hide or unhide the start/stop settings options to the services
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // adding and removing menu items creates problems, so best to just hide them.
@@ -116,11 +129,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String deviceName = prefs.getString("devicename", null);
+        String deviceName = prefs.getString(CommandConstants.PREF_DEVICE_NAME, null);
         deviceNameTV.setText(deviceName);
     }
 
-    public void updateLevels(Map<ReportKey, String> levels) {
+    public void updateReport(Map<ReportKey, String> levels) {
         for (ReportKey level : levels.keySet()) {
             switch (level) {
                 case batterylevel:
@@ -188,12 +201,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     // handler for received collector "com.dell.iot.android.update" events
+    @SuppressWarnings("unchecked")//cast hashmap
     private BroadcastReceiver updateMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            HashMap<ReportKey, String> updateMap = (HashMap) intent.getSerializableExtra("updates");
+            HashMap<ReportKey, String> updateMap = (HashMap) intent.getSerializableExtra(CollectionConstants.INTENT_UPD_KEY);
             if (updateMap.size() > 0)
-                updateLevels(updateMap);
+                updateReport(updateMap);
         }
     };
 }

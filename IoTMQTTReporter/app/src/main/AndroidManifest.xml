@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,25 +23,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MsgPreferencesActivity"
+            android:name=".ui.MsgPreferencesActivity"
             android:label="@string/title_activity_msg_preferences"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name=".service.CollectionService"
+            android:name=".service.collection.CollectionService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".service.CommandService"
+            android:name=".service.command.CommandService"
             android:enabled="true"
             android:exported="false" />
 
         <receiver
-            android:name=".service.CollectionUpdateSendor"
+            android:name=".service.collection.CollectionUpdateSendor"
             android:enabled="true"
             android:exported="false" />
         <receiver
-            android:name=".service.CommandResponseSendor"
+            android:name=".service.command.CommandResponseSendor"
             android:enabled="true"
             android:exported="true"></receiver>
     </application>

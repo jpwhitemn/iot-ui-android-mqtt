@@ -1,4 +1,9 @@
 <resources>
+    <!--
+    /*******************************************************************************
+     * © Copyright 2016, Dell, Inc.  All Rights Reserved.
+     ******************************************************************************/
+    -->
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">

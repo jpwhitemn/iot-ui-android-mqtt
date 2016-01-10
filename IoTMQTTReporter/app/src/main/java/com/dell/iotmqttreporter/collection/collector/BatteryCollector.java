@@ -1,4 +1,9 @@
-package com.dell.iotmqttreporter.collection;
+/*******************************************************************************
+ * © Copyright 2016, Dell, Inc.  All Rights Reserved.
+ ******************************************************************************/
+package com.dell.iotmqttreporter.collection.collector;
+
+import static com.dell.iotmqttreporter.service.collection.CollectionConstants.*;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,9 +12,21 @@ import android.os.BatteryManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.dell.iotmqttreporter.collection.LastCollected;
+import com.dell.iotmqttreporter.collection.ReportKey;
+
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Created by Jim on 1/10/2016.
+ * <p/>
+ * Receives an intent call (as a broadcast receiver) on change of the device's battery information (using Android BatteryManager).
+ * <p/>
+ * On a detected change, sends a map containing the battery data that changed to the CollectionUpdateSendor (to send data out via MQTT).
+ * <p/>
+ * This broadcast receiver is started and stopped by the CollectionService.
+ */
 public class BatteryCollector extends BroadcastReceiver {
 
     private static final String TAG = "BatteryChange";
@@ -76,8 +93,8 @@ public class BatteryCollector extends BroadcastReceiver {
 
     private void sendMessage(Context ctx, HashMap<ReportKey, String> batteryUpdateMap) {
         Intent updateIntent = new Intent();
-        updateIntent.setAction("com.dell.iot.android.update");
-        updateIntent.putExtra("updates", batteryUpdateMap);
+        updateIntent.setAction(UPDATE_COLLECTION_ACTION);
+        updateIntent.putExtra(INTENT_UPD_KEY, batteryUpdateMap);
         LocalBroadcastManager.getInstance(ctx).sendBroadcast(updateIntent);
     }
 }

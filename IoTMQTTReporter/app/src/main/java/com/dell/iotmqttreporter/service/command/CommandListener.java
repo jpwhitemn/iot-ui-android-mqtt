@@ -1,4 +1,9 @@
-package com.dell.iotmqttreporter.service;
+/*******************************************************************************
+ * © Copyright 2016, Dell, Inc.  All Rights Reserved.
+ ******************************************************************************/
+package com.dell.iotmqttreporter.service.command;
+
+import static com.dell.iotmqttreporter.service.command.CommandConstants.*;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,29 +20,25 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+/**
+ * Created by Jim on 1/10/2016.
+ * <p/>
+ * Listens on an MQTT topic for incoming command requests.
+ * When a command request is received, it passes the request on to a command processor.
+ */
+@SuppressWarnings("ConstantConditions")  // to suppress unnecessary null pointer exception checks
 public class CommandListener implements MqttCallback {
 
     private static final String TAG = "CommandListener";
 
-    private static final String INBROKER_KEY = "inbroker";
-    private static final String INCLIENTID_KEY = "inclient";
-    private static final String INUSER_KEY = "inuser";
-    private static final String INPASS_KEY = "inpass";
-    private static final String INTOPIC_KEY = "intopic";
-    private static final int QOS = 0;
-    private static final int KEEP_ALIVE = 30;
-
     private MqttClient client;
-    private MqttConnectOptions options;
-
     private SharedPreferences prefs;
-
-    private Context ctx;
-
     private CommandProcessor processor;
 
+    /**
+     * On creattion of the listner (created by and launched by the CommandService), create an instance of the processor to process any new command requests.
+     */
     public CommandListener(Context ctx) {
-        this.ctx = ctx;
         processor = new CommandProcessor(ctx);
         if (prefs == null) {
             getSharedPreferences(ctx);
@@ -46,27 +47,33 @@ public class CommandListener implements MqttCallback {
 
     @Override
     public void connectionLost(Throwable cause) {
-
+        Log.e(TAG, "Connection to MQTT command listener client lost.");
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
+        Log.d(TAG, "Receipt of command request complete.");
     }
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        if (prefs.getString(INTOPIC_KEY, null).equals(topic)) {
-            processor.process(message.getPayload());
-        }
+        // so long as the message received is for the incoming command, process the payload
+        if (prefs != null) {
+            if (prefs.getString(INTOPIC_KEY, null).equals(topic)) {
+                processor.process(message.getPayload());
+            } else
+                Log.e(TAG, "Topic of incoming message does not match command message topic");
+        } else
+            Log.e(TAG, "Preferences not available to get MQTT connection for command message listening");
     }
 
-    private void getSharedPreferences(Context ctx) {
-        PreferenceManager.setDefaultValues(ctx, R.xml.preferences, false);
-        prefs = PreferenceManager.getDefaultSharedPreferences((ctx));
-    }
-
+    /**
+     * Start listing for new MQTT command request messages.  Started by the command service.
+     */
     public void startListening() {
+        MqttConnectOptions options;
         try {
+            // TODO - extract client and options work to another class; combine with the CommandResponseSendor and CollectionUpdateSendor that need the same
             client = new MqttClient(prefs.getString(INBROKER_KEY, null), prefs.getString(INCLIENTID_KEY, null), new MemoryPersistence());
             options = new MqttConnectOptions();
             options.setUserName(prefs.getString(INUSER_KEY, null));
@@ -82,6 +89,9 @@ public class CommandListener implements MqttCallback {
         }
     }
 
+    /**
+     * Stop listening for new MQTT command request messages.  Stopped by the command service.
+     */
     public void cleanup() {
         if (client != null) {
             try {
@@ -94,4 +104,9 @@ public class CommandListener implements MqttCallback {
         }
     }
 
+    // get the shared preferences holding the MQTT connection information along with the device name
+    private void getSharedPreferences(Context ctx) {
+        PreferenceManager.setDefaultValues(ctx, R.xml.preferences, false);
+        prefs = PreferenceManager.getDefaultSharedPreferences((ctx));
+    }
 }
