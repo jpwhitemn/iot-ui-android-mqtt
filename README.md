@@ -17,3 +17,4 @@ Copyright 2016, Dell, Inc.
 
 # MQTT component design
 Here is a rough diagram of the components internal to the application that send/rec the varioius MQTT messages
+![AndroidServicesOverview.png](https://bitbucket.org/repo/e6noXE/images/3097348901-AndroidServicesOverview.png)
