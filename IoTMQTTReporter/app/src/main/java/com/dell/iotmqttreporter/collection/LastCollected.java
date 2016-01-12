@@ -41,6 +41,8 @@ public class LastCollected {
     }
 
     public static Object get(ReportKey key) {
+        if (!getInstance().lastUpdates.containsKey(key))
+            return "no data";
         return getInstance().lastUpdates.get(key);
     }
 

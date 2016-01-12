@@ -17,6 +17,8 @@ import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.dell.iotmqttreporter.collection.LastCollected;
+import com.dell.iotmqttreporter.collection.ReportKey;
 import com.dell.iotmqttreporter.collection.collector.BatteryCollector;
 import com.dell.iotmqttreporter.collection.collector.GeoCollector;
 import com.dell.iotmqttreporter.collection.collector.LightCollector;
@@ -59,6 +61,7 @@ public class CollectionService extends Service {
         startLightService();
         startLocationService();
         startOrientationService();
+        updateLastCollected(true);
         return START_STICKY;
     }
 
@@ -69,6 +72,7 @@ public class CollectionService extends Service {
         stopLightService();
         stopLocationService();
         stopOrientationService();
+        updateLastCollected(false);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(sendor);
         Log.d(TAG, "Stopped all services");
     }
@@ -146,6 +150,10 @@ public class CollectionService extends Service {
     private boolean checkForPermission(String permission) {
         int res = checkCallingOrSelfPermission(permission);
         return (res == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void updateLastCollected(boolean on){
+        LastCollected.getInstance().put(ReportKey.collect, on);
     }
 
 }
