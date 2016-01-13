@@ -34,6 +34,7 @@ public class CommandProcessor {
         this.ctx = ctx;
     }
 
+    @SuppressWarnings("ConstantConditions")
     public void process(byte[] payload) {
         try {
             Log.d(TAG, "Processing message:  " + new String(payload));
@@ -48,8 +49,14 @@ public class CommandProcessor {
                 ReportKey key = ReportKey.valueOf(extractCommandData(jsonObject, CMD_KEY));
                 Log.d(TAG, "Processing " + method + " command:  " + key.toString() + ", uuid: " + uuid);
                 sendMessage(key, uuid, CMD_GET);
-            } else { // its a put command request.  Request to turn off the collection service if "off" is the value and return "ok"
-                Boolean onOffparam = Boolean.parseBoolean(extractCommand(jsonObject));
+            } else { // its a put command request.  Request to turn off the collection service if the value is 0.  Turn on the collection service if the value is other than 0.  Return "ok"
+                int onOffparam;
+                try {
+                    onOffparam = Integer.parseInt(extractCommand(jsonObject));
+                } catch (NumberFormatException parseE) {
+                    Log.i(TAG, "Request to turn on/off the collection sent a non-number value and was treated as zero (off).");
+                    onOffparam = 0;
+                }
                 Log.d(TAG, "Processing " + method + " with parameters:  " + onOffparam + ", uuid: " + uuid);
                 requestCollectionStartStop(onOffparam);
                 sendMessage(ReportKey.name, uuid, CMD_PUT);
@@ -62,14 +69,15 @@ public class CommandProcessor {
 
     // get the data out of the MQTT message.  This includes the command request UUID, method (GET or PUT), report key (batterylevel, altitude, etc.), and parameter data.
     private String extractCommandData(JsonObject jsonObject, String dataPart) {
-        JsonElement element = jsonObject.get(dataPart);
-        if (element != null)
-            return element.getAsString();
-        else
-            return null;
+        if (jsonObject != null) {
+            JsonElement element = jsonObject.get(dataPart);
+            if (element != null)
+                return element.getAsString();
+        }
+        return null;
     }
 
-    // extract the parameter "on" data
+    // extract the parameter "Status" data
     private String extractCommand(JsonObject jsonObject) {
         JsonElement array = jsonObject.get(PARAMS_KEY);
         if (array != null) {
@@ -95,8 +103,8 @@ public class CommandProcessor {
     }
 
     // send request to collection service to start or stop based on on command parameter
-    private void requestCollectionStartStop(boolean on) {
-        if (on)
+    private void requestCollectionStartStop(int on) {
+        if (on != 0)
             startCollectionServices();
         else
             stopCollectionServices();

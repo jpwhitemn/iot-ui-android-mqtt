@@ -22,7 +22,7 @@ public class CommandConstants {
     // key to the command request unique identifier for each request.
     public static final String UUID_KEY = "uuid";
     // key to the "collect" put request to turn on (true or false) the collecting service
-    public static final String CMD_PUT_NAME = "on";
+    public static final String CMD_PUT_NAME = "Status";
     // key to the command put paramaters
     public static final String PARAMS_KEY = "params";
 
