@@ -61,7 +61,7 @@ public class CollectionService extends Service {
         startLightService();
         startLocationService();
         startOrientationService();
-        updateLastCollected(true);
+        updateCollectingState(1);
         return START_STICKY;
     }
 
@@ -72,7 +72,7 @@ public class CollectionService extends Service {
         stopLightService();
         stopLocationService();
         stopOrientationService();
-        updateLastCollected(false);
+        updateCollectingState(0);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(sendor);
         Log.d(TAG, "Stopped all services");
     }
@@ -152,7 +152,7 @@ public class CollectionService extends Service {
         return (res == PackageManager.PERMISSION_GRANTED);
     }
 
-    private void updateLastCollected(boolean on){
+    private void updateCollectingState(int on){
         LastCollected.getInstance().put(ReportKey.collect, on);
     }
 

@@ -32,7 +32,7 @@ public class LightCollector implements SensorEventListener {
     private static final String TAG = "LightChange";
 
     // required differences between current and last readings in order to send update
-    private final static float CHG_LIGHT_LEVEL = 3;
+    private final static float CHG_LIGHT_LEVEL = 10;
 
     private float lastLightLevel;
 

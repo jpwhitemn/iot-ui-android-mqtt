@@ -32,9 +32,9 @@ public class BatteryCollector extends BroadcastReceiver {
     private static final String TAG = "BatteryChange";
 
     // required differences between current and last readings in order to send update
-    private static final int LVL_CHG_DIFF = 5;
-    private static final int TEMP_CHG_DIFF = 5;
-    private static final int VOLT_CHG_DIFF = 10;
+    private static final int LVL_CHG_DIFF = 10;
+    private static final int TEMP_CHG_DIFF = 10;
+    private static final int VOLT_CHG_DIFF = 20;
 
     private int last_health;
     private int last_level;

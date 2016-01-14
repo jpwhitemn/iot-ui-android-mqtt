@@ -33,7 +33,7 @@ public class OrientationCollector implements SensorEventListener {
     private static final String TAG = "OrientationChange";
 
     // required differences between current and last readings in order to send update
-    private static final int CHG_DIR_DIFF = 5;
+    private static final int CHG_DIR_DIFF = 20;
 
     private int lastDirection;  // in degrees (-180 to 180)
 
