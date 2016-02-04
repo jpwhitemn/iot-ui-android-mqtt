@@ -73,8 +73,12 @@ public class CommandResponseSendor extends BroadcastReceiver {
                     // if a get request, pull the latest data for the ReportKey requested and add it to the hash map response holder
                     if (CMD_GET.equals(intent.getStringExtra(METHOD_KEY))) {
                         ReportKey key = ReportKey.valueOf(intent.getStringExtra(REPPORT_KEY));
-                        Object data = LastCollected.get(key);
-                        response.put(key, data.toString());
+                        if (key.equals(ReportKey.ping)) {
+                            response.put(key, PING_RESP);
+                        } else {
+                            Object data = LastCollected.get(key);
+                            response.put(key, data.toString());
+                        }
                     }
                     // send the response via MQTT - putting the hash map converted to JSON in the body
                     sendMessage(gson.toJson(response));

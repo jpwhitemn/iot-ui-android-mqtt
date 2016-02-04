@@ -31,6 +31,9 @@ public class CommandConstants {
     // value of method indicator for put requests
     public static final String CMD_PUT = "PUT";
 
+    // value of ping response
+    public static final String PING_RESP = "pong";
+
     // key to preferences MQTT command response broker value
     public static final String RESPBROKER_KEY = "respbroker";
     // key to preferences MQTT command response client id value

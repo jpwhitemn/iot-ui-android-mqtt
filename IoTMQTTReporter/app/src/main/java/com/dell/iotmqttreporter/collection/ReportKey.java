@@ -9,5 +9,5 @@ package com.dell.iotmqttreporter.collection;
  * Defines the keys for collected data by this device.  The name and UUID are additional values that are reported by the device back to the MQTT device service.
  */
 public enum ReportKey {
-    batterylevel, batteryhealth, batteryvoltage, batterytemperature, direction, altitude, latitude, longitude, speed, lightlevel, collect, name, uuid
+    batterylevel, batteryhealth, batteryvoltage, batterytemperature, direction, altitude, latitude, longitude, speed, lightlevel, collect, name, uuid, ping
 }
