@@ -5,11 +5,13 @@ package com.dell.iotmqttreporter.service.command;
 
 import static com.dell.iotmqttreporter.service.command.CommandConstants.*;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.dell.iotmqttreporter.R;
@@ -76,6 +78,7 @@ public class CommandResponseSendor extends BroadcastReceiver {
                     }
                     // send the response via MQTT - putting the hash map converted to JSON in the body
                     sendMessage(gson.toJson(response));
+                    sendNofication(context, gson.toJson(response));
                 } catch (Exception e) {
                     Log.e(TAG, "Unable to response to command request." + e.getMessage());
                     e.printStackTrace();
@@ -125,5 +128,18 @@ public class CommandResponseSendor extends BroadcastReceiver {
     private void getSharedPreferences(Context ctx) {
         PreferenceManager.setDefaultValues(ctx, R.xml.preferences, false);
         prefs = PreferenceManager.getDefaultSharedPreferences((ctx));
+    }
+
+
+    private void sendNofication(Context ctx, String text){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(ctx)
+                        .setSmallIcon(R.drawable.fuse)
+                        .setContentTitle("Fuse Command Request")
+                        .setContentText(text);
+        NotificationManager mNotificationManager =
+                (NotificationManager) ctx.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancelAll();
+        mNotificationManager.notify(1, mBuilder.build());
     }
 }
