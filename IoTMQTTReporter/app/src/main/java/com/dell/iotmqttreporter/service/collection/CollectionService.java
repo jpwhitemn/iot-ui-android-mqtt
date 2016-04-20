@@ -3,8 +3,6 @@
  ******************************************************************************/
 package com.dell.iotmqttreporter.service.collection;
 
-import static com.dell.iotmqttreporter.service.collection.CollectionConstants.*;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +21,11 @@ import com.dell.iotmqttreporter.collection.collector.BatteryCollector;
 import com.dell.iotmqttreporter.collection.collector.GeoCollector;
 import com.dell.iotmqttreporter.collection.collector.LightCollector;
 import com.dell.iotmqttreporter.collection.collector.OrientationCollector;
+
+import static com.dell.iotmqttreporter.service.collection.CollectionConstants.FINE_LOC_PERMISSION;
+import static com.dell.iotmqttreporter.service.collection.CollectionConstants.LOCATION_INTERVAL;
+import static com.dell.iotmqttreporter.service.collection.CollectionConstants.MIN_DISTANCE;
+import static com.dell.iotmqttreporter.service.collection.CollectionConstants.UPDATE_COLLECTION_ACTION;
 
 /**
  * Created by Jim on 1/10/2016.
@@ -152,7 +155,7 @@ public class CollectionService extends Service {
         return (res == PackageManager.PERMISSION_GRANTED);
     }
 
-    private void updateCollectingState(int on){
+    private void updateCollectingState(int on) {
         LastCollected.getInstance().put(ReportKey.collect, on);
     }
 

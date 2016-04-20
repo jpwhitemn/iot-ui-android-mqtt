@@ -3,14 +3,18 @@
  ******************************************************************************/
 package com.dell.iotmqttreporter.ui;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -58,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         prefs.registerOnSharedPreferenceChangeListener(this);
+
         String deviceName = prefs.getString("devicename", null);
         deviceNameTV.setText(deviceName);
     }
@@ -65,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     public void onResume() {
         super.onResume();
+        getCriticalPermissions();
         // Register this activity to receive collection updates by collector - this is for display only and not sending which is done by the Collection Service/Collection Update Sendor
         LocalBroadcastManager.getInstance(this).registerReceiver(updateMessageReceiver,
                 new IntentFilter(CollectionConstants.UPDATE_COLLECTION_ACTION));
@@ -166,6 +172,35 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 case lightlevel:
                     lightLevelTV.setText(levels.get(ReportKey.lightlevel));
                     break;
+            }
+        }
+    }
+
+    private void getCriticalPermissions (){
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        251);
+            }
+        }
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        252);
             }
         }
     }

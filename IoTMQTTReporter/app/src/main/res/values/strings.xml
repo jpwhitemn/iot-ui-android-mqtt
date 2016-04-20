@@ -76,4 +76,7 @@
     <string name="outgoing_header">Outgoing Messages</string>
     <string name="cmdresp_header">Command Response Messages</string>
     <string name="title_activity_msg_preferences">Preferences</string>
+
+    <string name="course_access_request">Coarse location access required to provide location information to Fuse</string>
+    <string name="fine_access_request">Fine GPS location access required to provide location information to Fuse</string>
 </resources>

@@ -5,21 +5,21 @@
  ******************************************************************************/
 -->
 <resources>
-    <string name="devicenamedefault">devicex</string>
+    <string name="devicenamedefault">Android Phone MQTT</string>
     <string name="reportfreqdefault">60000</string>
-    <string name="outbrokerdefault">tcp://m11.cloudmqtt.com:14377</string>
+    <string name="outbrokerdefault">tcp://m11.cloudmqtt.com:12439</string>
     <string name="outclientdefault">CoreDataPublisher</string>
-    <string name="outuserdefault">widotgkt</string>
-    <string name="outpassdefault">wQsQuyK7p-Qe</string>
+    <string name="outuserdefault">vyrnnobp</string>
+    <string name="outpassdefault">q4u83TLxjCaI</string>
     <string name="outtopicdefault">CoreDataTopic</string>
-    <string name="inbrokerdefault">tcp://m11.cloudmqtt.com:14377</string>
+    <string name="inbrokerdefault">tcp://m11.cloudmqtt.com:12439</string>
     <string name="inclientdefault">AndroidDSSubscriber</string>
-    <string name="inuserdefault">widotgkt</string>
-    <string name="inpassdefault">wQsQuyK7p-Qe</string>
+    <string name="inuserdefault">vyrnnobp</string>
+    <string name="inpassdefault">q4u83TLxjCaI</string>
     <string name="intopicdefault">AndroidDSTopic</string>
-    <string name="respbrokerdefault">tcp://m11.cloudmqtt.com:14377</string>
+    <string name="respbrokerdefault">tcp://m11.cloudmqtt.com:12439</string>
     <string name="respclientdefault">CmdRespPublisher</string>
-    <string name="respuserdefault">widotgkt</string>
-    <string name="resppassdefault">wQsQuyK7p-Qe</string>
+    <string name="respuserdefault">vyrnnobp</string>
+    <string name="resppassdefault">q4u83TLxjCaI</string>
     <string name="resptopicdefault">CmdRespTopic</string>
 </resources>
