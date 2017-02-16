@@ -25,11 +25,13 @@ public class CommandConstants {
     public static final String CMD_PUT_NAME = "collect";
     // key to the command put paramaters
     public static final String PARAMS_KEY = "params";
+    // key used to get the message string
+    public static final String MSG_KEY = "message";
 
     // value of method indicator for get requests
-    public static final String CMD_GET = "GET";
+    public static final String CMD_GET = "get";
     // value of method indicator for put requests
-    public static final String CMD_PUT = "PUT";
+    public static final String CMD_PUT = "set";
 
     // value of ping response
     public static final String PING_RESP = "pong";

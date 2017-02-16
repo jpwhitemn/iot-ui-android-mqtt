@@ -45,21 +45,29 @@ public class CommandProcessor {
             // get the command message UUID from the payload.  This is needed in the response back to let the device service know how to pair the response to a request
             String uuid = extractCommandData(jsonObject, UUID_KEY);
             // if it is a get request, get the report key to know which last update to return in the response
-            if (CMD_GET.equals(method)) {
+            if (CMD_GET.equals(method.toLowerCase())) {
                 ReportKey key = ReportKey.valueOf(extractCommandData(jsonObject, CMD_KEY));
                 Log.d(TAG, "Processing " + method + " command:  " + key.toString() + ", uuid: " + uuid);
                 sendMessage(key, uuid, CMD_GET);
-            } else { // its a put command request.  Request to turn off the collection service if the value is 0.  Turn on the collection service if the value is other than 0.  Return "ok"
-                int onOffparam;
-                try {
-                    onOffparam = Integer.parseInt(extractCommand(jsonObject));
-                } catch (NumberFormatException parseE) {
-                    Log.i(TAG, "Request to turn on/off the collection sent a non-number value and was treated as zero (off).");
-                    onOffparam = 0;
+            } else { // its a put command request.
+                ReportKey key = ReportKey.valueOf(extractCommandData(jsonObject, CMD_KEY));
+                if (key.equals(ReportKey.message)) {
+                    // handle system message
+                    String msg = extractCommandData(jsonObject, "param");
+                    sendMessage(key, uuid, CMD_PUT, msg);
+                } else {
+                    //  Request to turn off the collection service if the value is 0.  Turn on the collection service if the value is other than 0.  Return "ok"
+                    int onOffparam;
+                    try {
+                        onOffparam = Integer.parseInt(extractCommand(jsonObject));
+                    } catch (NumberFormatException parseE) {
+                        Log.i(TAG, "Request to turn on/off the collection sent a non-number value and was treated as zero (off).");
+                        onOffparam = 0;
+                    }
+                    Log.d(TAG, "Processing " + method + " with parameters:  " + onOffparam + ", uuid: " + uuid);
+                    requestCollectionStartStop(onOffparam);
+                    sendMessage(ReportKey.name, uuid, CMD_PUT);
                 }
-                Log.d(TAG, "Processing " + method + " with parameters:  " + onOffparam + ", uuid: " + uuid);
-                requestCollectionStartStop(onOffparam);
-                sendMessage(ReportKey.name, uuid, CMD_PUT);
             }
         } catch (Exception e) {
             Log.e(TAG, "Error processing command request:  " + new String(payload));
@@ -70,7 +78,7 @@ public class CommandProcessor {
     // get the data out of the MQTT message.  This includes the command request UUID, method (GET or PUT), report key (batterylevel, altitude, etc.), and parameter data.
     private String extractCommandData(JsonObject jsonObject, String dataPart) {
         if (jsonObject != null) {
-            JsonElement element = jsonObject.get(dataPart);
+            JsonElement element = jsonObject.get(dataPart.toLowerCase());
             if (element != null)
                 return element.getAsString();
         }
@@ -99,6 +107,16 @@ public class CommandProcessor {
         updateIntent.putExtra(METHOD_KEY, method);
         if (CMD_GET.equals(method))  // if a command GET request, include the report key so the sendor can get the lastest update
             updateIntent.putExtra(REPPORT_KEY, requestedKey.toString());
+        LocalBroadcastManager.getInstance(ctx).sendBroadcast(updateIntent);
+    }
+
+    private void sendMessage(ReportKey requestedKey, String uuid, String method, String message) {
+        Intent updateIntent = new Intent();
+        updateIntent.setAction(CommandConstants.CMD_RESP_ACTION);
+        updateIntent.putExtra(UUID_KEY, uuid);
+        updateIntent.putExtra(METHOD_KEY, method);
+        updateIntent.putExtra(REPPORT_KEY, requestedKey.toString());
+        updateIntent.putExtra(MSG_KEY, message);
         LocalBroadcastManager.getInstance(ctx).sendBroadcast(updateIntent);
     }
 

@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.dell.iotmqttreporter.R;
 import com.dell.iotmqttreporter.collection.LastCollected;
@@ -78,6 +79,12 @@ public class CommandResponseSendor extends BroadcastReceiver {
                         } else {
                             Object data = LastCollected.get(key);
                             response.put(key, data.toString());
+                        }
+                    } else {
+                        ReportKey key = ReportKey.valueOf(intent.getStringExtra(REPPORT_KEY));
+                        if (key.equals(ReportKey.message)) {
+                            response.put(key,"message recd");
+                            Toast.makeText(context,intent.getStringExtra(MSG_KEY),Toast.LENGTH_LONG).show();
                         }
                     }
                     // send the response via MQTT - putting the hash map converted to JSON in the body
